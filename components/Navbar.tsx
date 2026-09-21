@@ -1,10 +1,12 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Search, Heart, MessageCircle, Menu } from 'lucide-react'
 import { getSessionInfo } from '@/lib/data'
 import { site } from '@/lib/site'
 import { logout } from '@/app/login/actions'
 
 const links = [
+  { href: '/', label: 'Home' },
   { href: '/shop', label: 'Shop' },
   { href: '/collections', label: 'Collections' },
   { href: '/about', label: 'About' },
@@ -17,21 +19,39 @@ export default async function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-cream/95 backdrop-blur">
       <div className="container-page grid h-16 grid-cols-[1fr_auto_1fr] items-center">
+
         {/* Kiri: menu */}
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Menu utama">
+        <nav
+          className="hidden items-center gap-7 md:flex"
+          aria-label="Menu utama"
+        >
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="text-[11px] tracking-wide text-ink/80 hover:text-ink">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-[11px] tracking-wide text-ink/80 hover:text-ink"
+            >
               {l.label}
             </Link>
           ))}
         </nav>
+
+        {/* Menu mobile */}
         <details className="relative md:hidden">
-          <summary className="flex h-9 w-9 cursor-pointer list-none items-center" aria-label="Buka menu">
+          <summary
+            className="flex h-9 w-9 cursor-pointer list-none items-center"
+            aria-label="Buka menu"
+          >
             <Menu size={20} />
           </summary>
+
           <div className="absolute left-0 top-11 flex w-52 flex-col gap-4 border border-line bg-cream p-5 shadow-sm">
             {links.map((l) => (
-              <Link key={l.href} href={l.href} className="text-sm">
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-sm"
+              >
                 {l.label}
               </Link>
             ))}
@@ -39,16 +59,31 @@ export default async function Navbar() {
         </details>
 
         {/* Tengah: logo */}
-        <Link href="/" className="font-serif text-xl tracking-[0.14em] md:text-2xl">
-          Family Design
+        <Link
+          href="/"
+          className="flex items-center justify-center"
+        >
+          <Image
+            src="/images/logo.png"
+            alt="Family Design"
+            width={350}
+            height={150}
+            className="h-11 w-auto md:h-11"
+          />
         </Link>
 
         {/* Kanan: ikon */}
         <div className="flex items-center justify-end gap-4">
+
+          {/* Search */}
           <details className="relative">
-            <summary className="flex h-9 w-6 cursor-pointer list-none items-center" aria-label="Cari produk">
+            <summary
+              className="flex h-9 w-6 cursor-pointer list-none items-center"
+              aria-label="Cari produk"
+            >
               <Search size={17} />
             </summary>
+
             <form
               action="/shop"
               className="absolute right-0 top-11 w-64 border border-line bg-cream p-2 shadow-sm"
@@ -63,11 +98,16 @@ export default async function Navbar() {
             </form>
           </details>
 
-          <Link href="/wishlist" aria-label="Wishlist" className="flex h-9 w-6 items-center">
+          {/* Wishlist */}
+          <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="flex h-9 w-6 items-center"
+          >
             <Heart size={17} />
           </Link>
 
-          {/* Pengganti ikon keranjang: pembelian dilakukan di marketplace, jadi diarahkan ke WhatsApp */}
+          {/* WhatsApp */}
           <a
             href={`https://wa.me/${site.whatsapp}`}
             target="_blank"
@@ -78,22 +118,35 @@ export default async function Navbar() {
             <MessageCircle size={17} />
           </a>
 
+          {/* Admin */}
           {isAdmin && (
-            <Link href="/admin" className="hidden text-[11px] underline underline-offset-4 md:block">
+            <Link
+              href="/admin"
+              className="hidden text-[11px] underline underline-offset-4 md:block"
+            >
               Admin
             </Link>
           )}
+
+          {/* Login / Logout */}
           {user ? (
             <form action={logout} className="hidden md:block">
-              <button type="submit" className="text-[11px] text-ink/80 hover:text-ink">
+              <button
+                type="submit"
+                className="text-[11px] text-ink/80 hover:text-ink"
+              >
                 Keluar
               </button>
             </form>
           ) : (
-            <Link href="/login" className="hidden text-[11px] text-ink/80 hover:text-ink md:block">
+            <Link
+              href="/login"
+              className="hidden text-[11px] text-ink/80 hover:text-ink md:block"
+            >
               Masuk
             </Link>
           )}
+
         </div>
       </div>
     </header>
